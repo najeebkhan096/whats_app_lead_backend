@@ -215,7 +215,7 @@ export class GoogleMapsScraperService {
   /**
    * Extract reviews (Simplified for reliability)
    */
-  async extractReviews(limit: number = 20): Promise<ReviewData[]> {
+  async extractReviews(_limit: number = 20): Promise<ReviewData[]> {
     if (!this.page) throw new Error('Page not initialized');
 
     // Stub or implementation depends on business-specific UI state
