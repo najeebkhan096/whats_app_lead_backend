@@ -2,6 +2,19 @@
 
 A complete enterprise-level Lead Finder backend system built with Node.js, Express, Playwright, PostgreSQL, Prisma ORM, and Redis Queue.
 
+## 🚀 Deployment (Railway)
+
+1. Connect this repo to [Railway.app](https://railway.app).
+2. Add **PostgreSQL** and **Redis** services.
+3. Set Variables:
+   - `DATABASE_URL`: `${{Postgres.DATABASE_URL}}`
+   - `REDIS_HOST`: `${{Redis.REDIS_HOST}}`
+   - `REDIS_PORT`: `${{Redis.REDIS_PORT}}`
+   - `REDIS_PASSWORD`: `${{Redis.REDIS_PASSWORD}}`
+4. Deploy a **Worker Service**:
+   - Create a second service from the same repo.
+   - Settings -> Deploy -> Start Command: `npm run worker:prod`
+
 ## Features
 
 - 🔍 **Google Maps Scraper**: Automated business discovery and data extraction

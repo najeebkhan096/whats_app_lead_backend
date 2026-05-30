@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "worker": "ts-node --require tsconfig-paths/register src/workers/index.ts",
+    "worker:prod": "node dist/workers/index.js",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:push": "prisma db push",
