@@ -1,0 +1,14 @@
+{
+  "watch": ["src"],
+  "ext": "ts,json",
+  "ignore": [
+    "src/**/*.spec.ts",
+    "node_modules",
+    "dist",
+    "logs/*",
+    ".npm-cache",
+    ".idea",
+    "prisma/migrations"
+  ],
+  "exec": "ts-node --require tsconfig-paths/register src/server.ts"
+}

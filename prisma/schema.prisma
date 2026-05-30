@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum ScanJobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum LeadType {
+  CATEGORY_A
+  CATEGORY_B
+  NORMAL
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  scanJobs ScanJob[]
+
+  @@map("users")
+}
+
+model ScanJob {
+  id                   String        @id @default(cuid())
+  userId               String
+  query                String
+  status               ScanJobStatus @default(PENDING)
+  progress             Int           @default(0)
+  totalBusinesses      Int           @default(0)
+  processedBusinesses  Int           @default(0)
+  reviewLimit          Int           @default(60)
+  checkWhatsapp        Boolean       @default(true)
+  scanMode             String        @default("both") // "google_maps", "website", "both"
+  errorMessage         String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  completedAt          DateTime?
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  leads  Lead[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("scan_jobs")
+}
+
+model Lead {
+  id               String     @id @default(cuid())
+  scanJobId        String
+  businessName     String
+  category         String?
+  address          String?
+  phone            String?
+  email            String?
+  website          String?
+  rating           Float?
+  reviewCount      Int?
+  whatsappNumber   String?
+  whatsappValid    Boolean    @default(false)
+  facebook         String?
+  instagram        String?
+  linkedin         String?
+  youtube          String?
+  tiktok           String?
+  mapsUrl          String?
+  lastReviewDate   String?
+  leadType         LeadType   @default(NORMAL)
+  suggestion       String?
+  hasRecentOneStar Boolean    @default(false)
+  leadQuality      Int        @default(50) // 0-100 quality score
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  // Relations
+  scanJob ScanJob @relation(fields: [scanJobId], references: [id], onDelete: Cascade)
+
+  @@index([scanJobId])
+  @@index([leadType])
+  @@index([rating])
+  @@index([createdAt])
+  @@map("leads")
+}
