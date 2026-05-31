@@ -5,7 +5,7 @@ nixPkgs = ["nodePackages.npm", "nodejs", "chromium", "playwright"]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["npm run build", "npx playwright install chromium"]
+cmds = ["npm run build", "npx playwright install chromium", "npx prisma db push --accept-data-loss"]
 
 [start]
 cmd = "npm run start"
